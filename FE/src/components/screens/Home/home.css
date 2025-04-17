@@ -107,7 +107,9 @@
      width: 30px;
      height: 30px;
  }
-
+.images{
+  height:500px;
+}
  .feature-item {
      padding: 15px;
      border-radius: 10px;
@@ -194,20 +196,31 @@
   .service-card {
     background-color: #ffffff;
     border-radius: 14px;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
     padding: 4px;
     width: 100%; 
-    min-height: 250px; 
+    min-height: 250px;  
     display: flex;
     flex-direction: column;
     justify-content: center;  
     align-items: center; 
     text-align: start;
-  } 
-  /* .service-card:hover {
+} 
+
+.service-card:hover {
+    background-color: #0d6efd; 
     transform: translateY(-5px);
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
-  } */
+}
+
+.service-card:hover h3,
+.service-card:hover p {
+    color: #ffffff !important; 
+}
+
+.service-card:hover .icon-box {
+    color: #ffffff !important; 
+}
   @media (max-width: 768px) {
     .service-card {
         width: 100%;
@@ -278,7 +291,7 @@
       } */
       .trust-image {
         max-width: 100%;
-        height: auto;
+        height: 500px;
         border-radius: 12px;
       }
       @media (max-width: 768px) {
@@ -294,7 +307,7 @@
         }
         .trust-image {
           margin-top: 20px;
-          width: 80%;
+          /* width: 80%; */
         }
       }
 
@@ -354,7 +367,7 @@
 
   /*  Section 6 Stylesheet */
 .consulting-container {
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -370,6 +383,12 @@
     height: auto;
     object-fit: cover;
   }
+  .doctor-image1 {
+    width: 100%;
+    height: 100vh;
+    height: auto;
+    object-fit: cover;
+  }
   .form-overlay {
     position: absolute;
     top: 50%;
@@ -381,7 +400,7 @@
   }
   .form-overlay h2 {
     color: white;
-    font-size: 44px;
+    font-size: 34px;
     font-weight: bold;
     margin-bottom: 20px;
   }
@@ -483,16 +502,39 @@
     transform: translateY(-50%);
     pointer-events: none; 
   }
+  .responsive-textarea {
+    resize: vertical; /* allows user to resize vertically */
+    width: 100%;
+    min-height: 100px;
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .responsive-textarea {
+      font-size: 0.95rem;
+      min-height: 80px;
+    }
+  }
+  
 
   /* Section 8 Styleesheet */ 
   .contact-card {
+    background: #e8f0ff;
+    border: 0px solid #ddd;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+     margin-bottom: 15px; 
+  }
+  
+  /* .contact-card {
     background: #e8f0ff;
     padding: 20px;
     border-radius: 10px;
     color: black;
     font-size: medium;
     margin-bottom: 15px; 
-  } 
+  }  */
   .contact-icon {
     font-size: 2rem;
     color: #007bff;
@@ -510,4 +552,14 @@
   }
   
   
+  .carousel-indicators {
+    margin-top: 20px; /* Move dots a little down */
+  }
+  
+  .carousel-indicators [data-bs-target] {
+    background-color: gray; /* Change dot color to gray */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
   

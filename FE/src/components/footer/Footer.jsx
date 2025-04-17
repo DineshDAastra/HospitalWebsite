@@ -1,18 +1,14 @@
 import React from "react";
 import { FaMapMarkerAlt, FaEnvelope, FaPhone } from "react-icons/fa";
 import "./Footer.css";
-import Logo from "../../../src/assets/img/Frame 74.svg"
+import Logo from "../../../src/assets/img/Frame 74.svg";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
     <footer className="container-fuild footer">
       <div className="footer-container">
         <div className="footer-logo">
-          <img
-            src={Logo}
-            alt="Healthcare Logo"
-            className="logo"
-          />
+          <img src={Logo} alt="Healthcare Logo" className="logo" />
         </div>
         <div className="container">
           <div className="row">
@@ -20,22 +16,52 @@ const Footer = () => {
               <div className="row">
                 <div className="col-12 col-md-6 footer-column">
                   <h3>Contact</h3>
-                  <p>
-                    <FaMapMarkerAlt className="icon" /> Santo Complex,
-                    Truvancherry, Chennai
-                  </p>
+                  <a
+                    href="https://maps.app.goo.gl/qzT9fD24woh5oNWi6"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <p>
+                      <FaMapMarkerAlt className="icon" /> 79, Vetri Vinayagar,
+                      Koil St, Tiruvalleeswarar Nagar, Anna Nagar West, Chennai,
+                      Tamil Nadu 600040
+                    </p>
+                  </a>
+
                   <p>
                     <FaEnvelope className="icon" /> info@aastratech.com
                   </p>
                   <p>
-                    <FaPhone className="icon" /> +1 554 558 748
+                    <FaPhone className="icon" /> + 09710495064
                   </p>
                 </div>
                 <div className="col-12 col-md-6 footer-column">
                   <h3>Company</h3>
-                  <p>About</p>
-                  <p>Appointment</p>
-                  <p>Contact</p>
+                  <p>
+                    <a
+                      href="#about"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      About
+                    </a>
+                  </p>
+                  <p>
+                    <a
+                      href="#contact-form"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      Appointment
+                    </a>
+                  </p>
+                  <p>
+                    <a
+                      href="#contact-form"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      Contact
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
@@ -49,9 +75,9 @@ const Footer = () => {
                 </div>
                 <div className="col-12 col-md-6 footer-column">
                   <h3>Working Time</h3>
-                  <p>Mon - Fri: 9.00am - 5.00pm</p>
-                  <p>Saturday: 10.00am - 6.00pm</p>
-                  <p>Sunday Closed</p>
+                  <p>Mon - Sun: 5 - 9pm</p>
+                  {/* <p>Saturday: 10.00am - 6.00pm</p>
+                  <p>Sunday Closed</p> */}
                 </div>
               </div>
             </div>
@@ -60,10 +86,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p className="text-white">
-          © {currentYear} Aastratechnologies. All Rights Reserved by Aastra
-          Technologies
-        </p>
+        <p className="text-white">© {currentYear} Balaji Ortho Care.</p>
       </div>
     </footer>
   );

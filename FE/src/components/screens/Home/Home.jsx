@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./home.css";
-import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
+import axios from "axios";
+import client from "../../../client/Client";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Form,
+  Modal,
+} from "react-bootstrap";
 import { FiArrowUpRight } from "react-icons/fi";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Joint from "../../../../src/assets/img/09.svg.svg";
 import Sports from "../../../../src/assets/img/10.svg fill.svg";
 import Fracture from "../../../../src/assets/img/11.svg.svg";
@@ -27,51 +38,76 @@ import Consultation1 from "../../../../src/assets/img/image 2.svg";
 import Contact from "../../../../src/assets/img/Frame.svg";
 import Contact1 from "../../../../src/assets/img/Frame (1).svg";
 import Contact2 from "../../../../src/assets/img/Frame (2).svg";
+import Group from "../../../../src/assets/img/Group.svg";
+import Group1 from "../../../../src/assets/img/Group (1).svg";
+import Group2 from "../../../../src/assets/img/Group (2).svg";
+import { addAppointment, addReview } from "../../../client/Api/AppoinmentApi";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaFileDownload } from "react-icons/fa";
+import { Document } from "react-pdf";
 const Home = () => {
-  const services = [
+  const [formData, setFormData] = useState({
+    patientName: "",
+    gender: "",
+    age: "",
+    phoneNumber: "",
+    reason: "",
+    date: "",
+    availableTime: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await addAppointment(formData);
+    if (response.statusCode === 200) {
+      setFormData({
+        patientName: "",
+        gender: "",
+        age: "",
+        phoneNumber: "",
+        reason: "",
+        date: "",
+        availableTime: "",
+      });
+      toast.success(response.message, {
+        autoClose: 2000,
+        position: "top-right",
+      });
+    }
+  };
+  const exerciseCategories = [
     {
       id: 1,
-      title: "Joint Replacement Surgery",
+      icon: <img src={Group} alt="Banner Image" />,
+      title: "Hip Exercises",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-      icon: <img src={Joint} alt="Banner Image" />,
+        "Targeted exercises to strengthen hip muscles, improve flexibility, and enhance joint mobility.",
     },
     {
       id: 2,
-      title: "Sports Injury Treatment",
+      icon: <img src={Group1} alt="Banner Image" />,
+      title: "Neck & Shoulder Exercises",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-      icon: <img src={Sports} alt="Banner Image" />,
+        "Gentle movements and stretches to relieve tension and improve posture for neck and shoulder health.",
     },
-  ];
-  const services1 = [
     {
       id: 3,
-      icon: <img src={Fracture} alt="Banner Image" />,
-      title: "Fracture & Trauma Care",
+      icon: <img src={Arthritis} alt="Banner Image" />,
+      title: "Knee Exercises",
       description:
-        "Lorem ipsum is simply dummy text of the printing and typesetting industry.",
+        "Effective routines to build knee stability, reduce pain, and support injury recovery.",
     },
     {
       id: 4,
-      icon: <img src={Spine} alt="Banner Image" />,
-      title: "Spine & Back Care",
+      icon: <img src={Group2} alt="Banner Image" />,
+      title: "Back Exercises",
       description:
-        "Lorem ipsum is simply dummy text of the printing and typesetting industry.",
-    },
-    {
-      id: 5,
-      icon: <img src={Arthritis} alt="Banner Image" />,
-      title: "Arthritis & Pain Management",
-      description:
-        "Lorem ipsum is simply dummy text of the printing and typesetting industry.",
-    },
-    {
-      id: 6,
-      icon: <img src={Pediatric} alt="Banner Image" />,
-      title: "Pediatric Orthopedics",
-      description:
-        "Lorem ipsum is simply dummy text of the printing and typesetting industry.",
+        "Core-strengthening and mobility workouts to support spinal alignment and reduce back discomfort.",
     },
   ];
   const services2 = [
@@ -79,11 +115,6 @@ const Home = () => {
       title: "Expert Care",
       description:
         "Our experienced orthopedic specialists provide precise diagnosis and treatment.",
-    },
-    {
-      title: "Advanced Technology",
-      description:
-        "We use state-of-the-art equipment for accurate and effective treatments.",
     },
     {
       title: "Advanced Technology",
@@ -127,107 +158,188 @@ const Home = () => {
       rating: 4,
     },
   ];
-  const testimonials = [
-    {
-      id: 1,
-      name: "David Patel",
-      text: "Dr. Robert Thompson is an exceptional cardiologist. His ability to explain complex medical issues in an easy way is impressive.",
-      image: David,
-      rating: 5,
-    },
-    {
-      id: 2,
-      name: "David Patel",
-      text: "Dr. Robert Thompson is an exceptional cardiologist. His ability to explain complex medical issues in an easy way is impressive.",
-      image: David1,
-      rating: 5,
-    },
-    {
-      id: 3,
-      name: "David Patel",
-      text: "Dr. Robert Thompson is an exceptional cardiologist. His ability to explain complex medical issues in an easy way is impressive.",
-      image: David2,
-      rating: 5,
-    },
-  ];
-  //   const contactDetails = [
-  //     {
-  //       id: 1,
-  //       icon: <img src="/src/assets/img/Frame.svg"/>,
-  //       text: "Aastra Technologies, Tiruvanchey, Chennai.",
-  //     },
-  //     {
-  //       id: 2,
-  //       icon: <img src="/src/assets/img/Frame (1).svg"/>,
-  //       text: "+44 20 4154 2541\n+44 20 4154 2541",
-  //     },
-  //     {
-  //       id: 3,
-  //       icon:<img src= "/src/assets/img/Frame (2).svg"/>,
-  //       text: "Mon-Fri: 9 AM – 6 PM\nSaturday: 9 AM – 4 PM",
-  //     },
-  //   ];
-  const TestimonialCard = ({ testimonial }) => {
-    return (
-      <div className="col-md-4 mb-4">
-        <div
-          className="card p-4  border-0"
-          style={{
-            backgroundImage: `url(${Frame})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        >
-          <FaQuoteLeft
-            className="position-absolute"
-            style={{
-              color: "#6c63ff",
-              fontSize: "24px",
-              top: "20px",
-              left: "20px",
-            }}
-          />
- 
-          <p className="text-muted mt-4">{testimonial.text}</p>
- 
-          <div className="d-flex align-items-center mt-3">
-            <img
-              src={testimonial.image}
-              alt={testimonial.name}
-              className="rounded-circle me-3"
-              width="50"
-              height="50"
-            />
-            <div>
-              <h5 className="mb-1 fw-bold">{testimonial.name}</h5>
-              <div className="text-warning">
-                {Array.from({ length: testimonial.rating }, (_, index) => (
-                  <FaStar key={index} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  const [reviews, setReviews] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [rating, setRating] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
+
+  const getAllReview = async () => {
+    try {
+      const response = await client("Review/GetAllReview", "GET");
+      return response.data;
+    } catch (error) {
+      console.error("Error Fetching Review:", error);
+      return [];
+    }
   };
+
+  useEffect(() => {
+    const fetchReview = async () => {
+      const response = await getAllReview();
+      setReviews(response);
+    };
+    fetchReview();
+  }, []);
+
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setName("");
+    setDescription("");
+    setRating(0);
+  };
+
+  const handledSubmit = async () => {
+    if (!name.trim() || !description.trim() || rating === 0) {
+      toast.error("Please fill all fields and select a rating!");
+      return;
+    }
+    // if (name.length > 50) {
+    //   toast.error("Name should not exceed 50 characters!");
+    //   return;
+    // }
+    // if (description.length > 150) {
+    //   toast.error("Description should not exceed 150 characters!");
+    //   return;
+    // }
+    const ReviewData = { name, description, rating };
+    try {
+      const response = await addReview(ReviewData);
+
+      if (response.statusCode === 200) {
+        // toast.success("Feedback submitted successfully!");
+        toast.success(response.message, {
+          autoClose: 2000,
+          position: "top-right",
+        });
+        handleCloseModal();
+
+        const data = await getAllReview();
+        setReviews(data.slice(0).reverse());
+      } else {
+        // toast.error("Failed to submit feedback.");
+        toast.error(response.message, {
+          position: "top-right",
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      toast.error("Something went wrong!");
+    }
+  };
+  const itemsPerSlide = isMobile ? 1 : 3;
+  // const totalSlides = Math.ceil(reviews.length / itemsPerSlide);
+  const totalSlides = Math.ceil((reviews?.length || 0) / itemsPerSlide);
+
+  const slideIndexes = Array.from({ length: totalSlides }, (_, i) => i);
+
+  const goToSlide = (index) => {
+    setActiveSlide(index);
+  };
+
+  const getReviewsForSlide = (slideIndex) => {
+    const startIndex = slideIndex * itemsPerSlide;
+    return reviews.slice(startIndex, startIndex + itemsPerSlide);
+  };
+
+  const styles = {
+    container: {
+      backgroundColor: "#f8f9fa",
+      padding: "60px 0",
+      position: "relative",
+      overflow: "hidden",
+    },
+    testimonialCard: {
+      backgroundColor: "#f0f7ff",
+      borderRadius: "10px",
+      height: "100%",
+      position: "relative",
+      textAlign: "left",
+      padding: "25px",
+      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+    },
+    quoteIcon: {
+      color: "#4169e1",
+      fontSize: "32px",
+      marginBottom: "15px",
+    },
+    testimonialText: {
+      fontSize: "15px",
+      lineHeight: "1.6",
+      marginBottom: "20px",
+    },
+    authorName: {
+      fontSize: "16px",
+      fontWeight: "bold",
+      marginBottom: "2px",
+    },
+    starRating: {
+      color: "#FFD700",
+      fontSize: "14px",
+    },
+    paginationDot: {
+      width: "10px",
+      height: "10px",
+      border: "none",
+      display: "inline-block",
+      margin: "0 5px",
+      borderRadius: "50%",
+      cursor: "pointer",
+    },
+    activeDot: {
+      backgroundColor: "#4169e1",
+    },
+    inactiveDot: {
+      backgroundColor: "#cbd3e1",
+      opacity: "0.5",
+    },
+    navArrow: {
+      position: "absolute",
+      top: "50%",
+      transform: "translateY(-50%)",
+      width: "40px",
+      height: "40px",
+      display: isMobile ? "none" : "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "white",
+      borderRadius: "50%",
+      boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+      border: "none",
+      cursor: "pointer",
+      zIndex: 10,
+      color: "#4169e1",
+    },
+    prevArrow: {
+      left: "-20px",
+    },
+    nextArrow: {
+      right: "-20px",
+    },
+  };
+
   return (
     <>
       {/* Section 1 */}
-      <div className="container-fluid">
-        <img
-          src={Banner}
-          alt="Banner Image"
-          className="image"
-        />
+      <div id="home" className="container-fluid">
+        <img src={Banner} alt="Banner Image" className="image" />
         <div className="text-overlay">
           <div className="health-banner">
             <div className="icon-circle">
-              <img
-                src={doctor}
-                alt="Health Icon"
-              />
+              <img src={doctor} alt="Health Icon" />
             </div>
             <span className="health-text">Strong Bones, Active Life</span>
           </div>
@@ -236,20 +348,29 @@ const Home = () => {
             Comprehensive orthopedic solutions for bone, joint, and muscle
             health—keeping you active at every stage of life.
           </p>
-          <a href="#" className="button">
+          <a
+            href="#"
+            className="button"
+            onClick={(e) => {
+              e.preventDefault();
+              document
+                .getElementById("contact-form")
+                .scrollIntoView({ behavior: "smooth" });
+            }}
+          >
             Appointment →
           </a>
         </div>
       </div>
- 
+
       {/*  Section 2 */}
-      <div className="container mb-3 mt-3">
+      <div className="container mb-3 mt-3" id="about">
         <div className="row align-items-center">
           <div className="col-md-6">
             <img
               src={Orthopedic}
               alt="Orthopedic Care"
-              className="img-fluid rounded-3"
+              className="img-fluid images rounded-3"
             />
           </div>
           <div className="col-md-6 mt-5">
@@ -258,17 +379,14 @@ const Home = () => {
               Providing Exceptional Orthopedic Care with a Focus on Patients
             </h2>
             <p>
-              At [Clinic Name], we are dedicated to delivering expert orthopedic
-              care to help patients regain mobility and live pain-free.
+              At Balaji Ortho Care, we are dedicated to delivering expert
+              orthopedic care to help patients regain mobility and live
+              pain-free.
             </p>
             <ul className="list-unstyled">
               <li className="d-flex align-items-start feature-item">
                 <div className="icon-container">
-                  <img
-                    src={Icon}
-                    className="icon-img"
-                    alt="Icon"
-                  />
+                  <img src={Icon} className="icon-img" alt="Icon" />
                 </div>
                 <div>
                   <strong>Patient-Centered Care</strong>
@@ -278,14 +396,10 @@ const Home = () => {
                   </p>
                 </div>
               </li>
- 
+
               <li className="d-flex align-items-start feature-item">
                 <div className="icon-container">
-                  <img
-                    src={Icon}
-                    className="icon-img"
-                    alt="Icon"
-                  />
+                  <img src={Icon} className="icon-img" alt="Icon" />
                 </div>
                 <div>
                   <strong>Advanced Techniques</strong>
@@ -295,14 +409,10 @@ const Home = () => {
                   </p>
                 </div>
               </li>
- 
+
               <li className="d-flex align-items-start feature-item">
                 <div className="icon-container">
-                  <img
-                    src={Icon}
-                    className="icon-img"
-                    alt="Icon"
-                  />
+                  <img src={Icon} className="icon-img" alt="Icon" />
                 </div>
                 <div>
                   <strong>Comprehensive Expertise</strong>
@@ -316,11 +426,66 @@ const Home = () => {
           </div>
         </div>
       </div>
- 
+
       {/* Section 3 */}
-      <div>
-        <section className="services-section">
-          <Container>
+      <div
+        id="service"
+        style={{ backgroundColor: "#F0F7FF", padding: "60px 0" }}
+      >
+        <Container>
+          <div className="text-center mb-5">
+            <div className="mb-4">
+              <button className="custom-button"> Therapeutic Exercises</button>
+            </div>
+            <h2 className="display-5 fw-bold mb-3" style={{ fontSize: "36px" }}>
+              Empowering Recovery Through Targeted
+              <br />
+              Therapeutic Exercises
+            </h2>
+            <p
+              className="text-muted mx-auto"
+              style={{ maxWidth: "800px", fontSize: "16px", lineHeight: "1.6" }}
+            >
+              Our physiotherapy team specializes in guided exercise programs
+              designed to improve mobility, reduce pain, and restore strength—
+              supporting your recovery journey from injury to full function.
+            </p>
+          </div>
+
+          <Row className="g-4">
+            {exerciseCategories.map((category) => (
+              <Col key={category.id} xs={12} sm={6} lg={3}>
+                <Card className="h-100 border-0 shadow-sm">
+                  <Card.Body className="p-4">
+                    <div className="mb-4">{category.icon}</div>
+                    <h3 className="fw-bold mb-2" style={{ fontSize: "20px" }}>
+                      {category.title}
+                    </h3>
+                    <p className="text-muted mb-4" style={{ fontSize: "14px" }}>
+                      {category.description}
+                    </p>
+                    <div className="mt-3">
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => {
+                          window.open("/filepath/Document.pdf", "_blanck");
+                        }}
+                      >
+                        <span className="me-2" style={{ color: "#DC3545" }}>
+                          <FaFileDownload />
+                        </span>
+                        Download
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </div>
+      {/* <Container>
             <Row className="align-items-center">
               <Col md={6}>
                 <div className="mb-4">
@@ -389,13 +554,13 @@ const Home = () => {
                 </Row>
               </Col>
             </Row>
-          </Container>
-        </section>
-      </div>
- 
+          </Container> */}
+      {/* </section>
+      </div> */}
+
       {/* Section 4 */}
       <div>
-        <section className="trust-section">
+        <section className="trust-section" id="whychooseus">
           <Container>
             <Row className="align-items-center">
               <Col md={6} className="text-center text-md-start mb-4 mb-md-0">
@@ -427,65 +592,11 @@ const Home = () => {
           </Container>
         </section>
       </div>
- 
+
       {/* Section 5 */}
-      <div>
-        <section className="services-section py-3">
-          <Container>
-            <div className="container text-center">
-              <button className="custom-button">Other Hospitals</button>
-              <h2 className="fw-bold">Hospital Branch</h2>
- 
-              <div className="row mt-4">
-                {hospitals.map((hospital) => (
-                  <div key={hospital.id} className="col-md-4 col-sm-6 mb-4">
-                    <div className="card hospital-card shadow-sm">
-                      <img
-                        src={hospital.icon}
-                        alt={hospital.name}
-                        className="card-img-top"
-                      />
-                      <div className="card-body">
-                        <h5 className="card-title">{hospital.name}</h5>
-                        <hr className="custom-divider" />
-                        <div className="row">
-                          <div className="col-6 d-flex align-items-center">
-                            <img
-                              src={Location}
-                              alt="Location"
-                              className="location-icon me-1"
-                            />
-                            <span className="address-text">
-                              {hospital.address}
-                            </span>
-                          </div>
-                          <div className="col-6 text-end">
-                            <span className="review-text">
-                              {hospital.reviews} Review
-                            </span>
-                            <div className="stars">
-                              {"★".repeat(hospital.rating)}
-                              {"☆".repeat(5 - hospital.rating)}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="carousel-indicators mt-4">
-                <span className="dot active"></span>
-                <span className="dot"></span>
-                <span className="dot"></span>
-              </div>
-            </div>
-          </Container>
-        </section>
-      </div>
- 
+
       {/* Section 6 */}
-      <div>
+      <div id="contact-form">
         <section>
           <Container fluid className="consulting-container">
             <Row className="align-items-center">
@@ -493,28 +604,93 @@ const Home = () => {
                 <img
                   src={Consultation}
                   alt="Doctor Consultation"
-                  className="doctor-image"
+                  className="doctor-image1"
                 />
                 <div className="form-overlay">
                   <h2>Book your Free Consulting</h2>
-                  <Form>
+                  <Form onSubmit={handleSubmit}>
                     <Form.Group>
-                      <Form.Control type="text" placeholder="Patient Name" />
-                    </Form.Group>
-                    <Form.Group>
-                      <Form.Control type="text" placeholder="Phone Number" />
-                    </Form.Group>
-                    <Form.Group>
-                      <Form.Control type="date" placeholder="mm/dd/yyyy" />
+                      <Form.Control
+                        type="text"
+                        name="patientName"
+                        placeholder="Patient Name"
+                        value={formData.patientName}
+                        onChange={handleChange}
+                        required
+                      />
                     </Form.Group>
                     <Form.Group className="custom-dropdown">
-                      <Form.Select>
-                        <option>Select Doctor Time</option>
-                        <option>10:00 AM - 11:00 AM</option>
-                        <option>11:00 AM - 12:00 PM</option>
+                      <Form.Select
+                        name="gender"
+                        value={formData.gender}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select Gender</option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Others">Others</option>
                       </Form.Select>
                     </Form.Group>
-                    <Button className="appointment-btn">
+                    <Form.Group>
+                      <Form.Control
+                        type="text"
+                        name="age"
+                        placeholder="Age"
+                        value={formData.age}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Control
+                        type="text"
+                        name="phoneNumber"
+                        placeholder="Phone Number"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Form.Group>
+                    <Form.Control
+                      as="textarea"
+                      name="reason"
+                      placeholder="Reason for Consultation"
+                      value={formData.reason}
+                      onChange={handleChange}
+                      rows={3}
+                      required
+                      className="responsive-textarea"
+                    />
+
+                    <Form.Group>
+                      <Form.Control
+                        type="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleChange}
+                        required
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="custom-dropdown">
+                      <Form.Select
+                        name="availableTime"
+                        value={formData.availableTime}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select Doctor Time</option>
+                        <option value="10:00 AM - 11:00 AM">
+                          10:00 AM - 11:00 AM
+                        </option>
+                        <option value="11:00 AM - 12:00 PM">
+                          11:00 AM - 12:00 PM
+                        </option>
+                      </Form.Select>
+                    </Form.Group>
+
+                    <Button type="submit" className="appointment-btn">
                       Appointment <FiArrowUpRight className="arrow-icon" />
                     </Button>
                   </Form>
@@ -531,64 +707,195 @@ const Home = () => {
           </Container>
         </section>
       </div>
- 
+
       {/* Section 7 */}
-      <div>
-        <section>
-          <div
-            className="container-fluid text-center py-3"
-            style={{
-              background: "rgba(255, 255, 255, 0.8)",
-              borderRadius: "15px",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <button className="custom-button">Client Feedback</button>
-            <h2 className="mb-4 fw-bold">Words from Our Patients</h2>
-            <div className="container">
-              <div className="row">
-                {testimonials.map((testimonial) => (
-                  <TestimonialCard
-                    key={testimonial.id}
-                    testimonial={testimonial}
+      <div id="testimonial" style={styles.container}>
+        <div className="container text-center">
+          <button className="custom-button" onClick={handleOpenModal}>
+            {" "}
+            Client Feedback
+          </button>
+          <h2 className="mb-5 fw-bold">Words from Our Patients</h2>
+
+          {reviews && reviews.length > 0 ? (
+            <div className="testimonial-carousel position-relative">
+              {/* Testimonials */}
+              <div className="carousel-inner">
+                <div className="row">
+                  {getReviewsForSlide(activeSlide).map((review, index) => (
+                    <div
+                      className={isMobile ? "col-12" : "col-md-4"}
+                      key={review.id || index}
+                    >
+                      <div style={styles.testimonialCard}>
+                        <FaQuoteLeft style={styles.quoteIcon} />
+                        <p style={styles.testimonialText}>
+                          {review.description ||
+                            "Dr. Robert Thompson is an exceptional cardiologist. His ability to explain with complex medical issues in a way that's easy to understand is truly impressive."}
+                        </p>
+                        <div className="d-flex align-items-center">
+                          <img
+                            src={review.image || David}
+                            alt={review.name || "David Patel"}
+                            className="rounded-circle me-3"
+                            width="50"
+                            height="50"
+                            style={{ objectFit: "cover" }}
+                          />
+                          <div>
+                            <h5 style={styles.authorName}>
+                              {review.name || "David Patel"}
+                            </h5>
+                            <div style={styles.starRating}>
+                              {Array.from(
+                                { length: review.rating || 5 },
+                                (_, i) => (
+                                  <FaStar key={i} />
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="carousel-indicators position-relative mt-4">
+                {slideIndexes.map((index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    style={{
+                      ...styles.paginationDot,
+                      ...(activeSlide === index
+                        ? styles.activeDot
+                        : styles.inactiveDot),
+                    }}
+                    onClick={() => goToSlide(index)}
+                    aria-label={`Slide ${index + 1}`}
+                  ></button>
+                ))}
+              </div>
+              {totalSlides > 1 && (
+                <>
+                  <button
+                    style={{ ...styles.navArrow, ...styles.prevArrow }}
+                    onClick={() =>
+                      goToSlide(
+                        activeSlide > 0 ? activeSlide - 1 : totalSlides - 1
+                      )
+                    }
+                    aria-label="Previous"
+                  >
+                    <FaChevronLeft />
+                  </button>
+                  <button
+                    style={{ ...styles.navArrow, ...styles.nextArrow }}
+                    onClick={() =>
+                      goToSlide(
+                        activeSlide < totalSlides - 1 ? activeSlide + 1 : 0
+                      )
+                    }
+                    aria-label="Next"
+                  >
+                    <FaChevronRight />
+                  </button>
+                </>
+              )}
+            </div>
+          ) : (
+            <p>No reviews yet. Be the first to share your experience!</p>
+          )}
+        </div>
+        <Modal show={showModal} onHide={handleCloseModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Client Feedback</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <form>
+              <div className="form-group mb-3">
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  maxLength="50"
+                />
+              </div>
+
+              <div className="form-group mb-3">
+                <textarea
+                  placeholder="Description"
+                  className="form-control"
+                  rows="3"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  maxLength="150"
+                ></textarea>
+              </div>
+
+              <div className="form-group mb-3 text-center">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <FaStar
+                    key={star}
+                    size={30}
+                    color={star <= rating ? "gold" : "gray"}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setRating(star)}
                   />
                 ))}
               </div>
-            </div>
-          </div>
-        </section>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handledSubmit}>
+              Submit
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
- 
       {/* Section 8 */}
       <div>
         <section>
-          <div className="container text-center mt-3">
-            <button className="custom-button">Client Feedback</button>
+          <div className="container text-center mt-3 mb-3">
+            <button className="custom-button">Contact Information</button>
             <h2 className="fw-bold">
               General Contact <span className="text-primary">Information</span>
             </h2>
             <div className="row mt-4">
-              <div className="col-sm-4">
-                <div className="contact-card">
-                  <img src={Contact}/>
-                  <p className="contact">Aastra Technologies,<br></br>
-                   Tiruvanchey, Chennai.</p>
+              <div className="col-md-4 d-flex">
+                <div className="contact-card text-center h-100 w-100">
+                  <img src={Contact} alt="Contact" />
+                  <a
+                    href="https://maps.app.goo.gl/qzT9fD24woh5oNWi6"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <p>
+                      79, Vetri Vinayagar, Koil St, Tiruvalleeswarar Nagar, Anna
+                      Nagar West, Chennai, Tamil Nadu 600040
+                    </p>
+                  </a>
                 </div>
               </div>
-              <div className="col-md-4">
-                <div className="contact-card">
-                <img src={Contact1} />
-                  <p className="contact">+44 20 4154 2541<br></br>
-                  +44 20 4154 2541</p>
+
+              <div className="col-md-4 d-flex">
+                <div className="contact-card text-center h-100 w-100">
+                  <img src={Contact1} alt="Phone" />
+                  <p>+09710495064</p>
                 </div>
               </div>
-              <div className="col-md-4">
-                <div className="contact-card">
-                <img src={Contact2} />
-                  <p className="contact">Mon-Fri: 9 AM - 6 PM
-                    <br></br>
-                  Saturday: 9 AM - 4 PM</p>
+
+              <div className="col-md-4 d-flex">
+                <div className="contact-card text-center h-100 w-100">
+                  <img src={Contact2} alt="Timing" />
+                  <p>Mon - Sun: 5 - 9PM</p>
                 </div>
               </div>
             </div>
@@ -598,5 +905,5 @@ const Home = () => {
     </>
   );
 };
- 
+
 export default Home;

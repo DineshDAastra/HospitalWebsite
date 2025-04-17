@@ -1,0 +1,17 @@
+.appointtable{
+    background-color: #e9f1fb !important;
+}
+.list{
+    color: #5E6E82 !important;
+    font-size: 20px;
+    font-weight: 600;
+}
+.approved{
+    background-color: #fff;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 1rem;
+    width: 100%;
+}

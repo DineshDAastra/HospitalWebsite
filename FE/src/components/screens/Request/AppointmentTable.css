@@ -1,0 +1,425 @@
+.UserPageMainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* padding: 1rem 0rem; */
+  }
+  
+  .UserPageMainBreadcrumbsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .UserPageMainBreadcrumbsTitle {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .UsersTableData {
+    width: 100%;
+    padding: 1rem;
+    margin: 1rem;
+    background-color: #fff;
+    border-radius: 5px;
+  }
+  
+  .EditIcon {
+    width: 15px;
+    cursor: pointer;
+    margin: 0rem 0.3rem;
+  }
+  
+  .UsersTableDataButtonContent {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .UsersTableDataAddButton {
+    border: none;
+    border-radius: 5px;
+    border: 1px solid #f5b810;
+    color: #000;
+    padding: 0.3rem 1.5rem;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0.5rem;
+    width: fit-content;
+  }
+  
+  .UsersTableDataAddButton:hover {
+    background-color: #f5b810;
+    color: #000;
+  
+  }
+  
+  .AddUserIcon {
+    width: 20px;
+    margin: 0px 5px;
+  }
+  .AddUserIcon:hover{
+    color: #fff;
+  }
+  .ModelPageContainer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  
+  }
+  .ModelPageContainerHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #ff6b00;
+    color: #fff;
+  }
+  .ModelPageContainerHeaderTitle{
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0rem;
+  }
+  .ModelCancleIcon{
+    cursor: pointer;
+  }
+  .ModelPageContainerFooter{
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+  }
+  .UsersTableDataCancleButton{
+    border: none;
+    border-radius: 5px;
+    border: 1px solid #ea2b25;
+    color: #000;
+    padding: 0.3rem 0.5rem;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0.5rem;
+    width: fit-content;
+    text-align: center;
+  }
+  
+  .UsersTableDataCancleButton:hover {
+    background-color: #ea2b25;
+    color: #fff;
+  }
+  .UsersTableDataSaveButton{
+    border: none;
+    border-radius: 5px;
+    border: 1px solid #164505;
+    color: #000;
+    padding: 0.3rem 0.5rem;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0.5rem;
+    width: fit-content;
+    text-align: center;
+  }
+  
+  .UsersTableDataSaveButton:hover {
+    background-color: #164505;
+    color: #fff;
+  }
+  .ModelPageContainerContent{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 1rem 2rem;
+  }
+  .ModelPageContainerCard{
+    display: flex;
+    flex-direction: column;
+    width: 28%;
+    margin: 1rem;
+  }
+  .ModelPageInputLable{
+    margin: 0rem;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .ModelPageInputField{
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #000;
+  }
+  .ModelPageInputField:hover,
+  .ModelPageInputField:active,
+  .ModelPageInputField:focus{
+    border: 1px solid #ff6b00;
+    outline: none !important;
+  }
+  .ErrorMsg{
+    margin: 0rem;
+    font-size: 12px;
+    color: #ea2b25;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .UserPageAdminRoleTag{
+    margin: 0rem;
+    padding: 0.3rem 0.5rem;
+    background-color: #ff6b00;
+    border-radius: 10px;
+    color: #fff;
+  }
+  .UserPageVendorRoleTag{
+    margin: 0rem;
+    padding: 0.3rem 0.5rem;
+    background-color: #053557;
+    border-radius: 10px;
+    color: #fff;
+  }
+  .UserPageManagerRoleTag{
+    margin: 0rem;
+    padding: 0.3rem 0.5rem;
+    background-color: #164505;
+    border-radius: 10px;
+    color: #fff;
+  }
+  .UserPageSuperviserRoleTag{
+    margin: 0rem;
+    padding: 0.3rem 0.5rem;
+    background-color: #ea2b25;
+    border-radius: 10px;
+    color: #fff;
+  }
+  .FormContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .FormGroup {
+  display: flex;
+  flex-direction: column;
+  }
+  
+  .FormGroup label {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #333;
+  }
+  
+  .FormInput,
+  .FormSelect,
+  .FormTextarea {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 50%;
+  }
+  
+  .FormActions {
+  display: flex;
+  gap: 16px;
+  }
+  
+  .SubmitButton {
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .CancelButton {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  }
+  
+  .SubmitButton:hover,
+  .CancelButton:hover {
+  opacity: 0.9;
+  }
+  
+  .FormGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px; 
+  }
+  
+  .FormGroup label {
+    width: 200px; 
+    font-weight: bold;
+  }
+  
+  .FormGroup input,
+  .FormGroup select {
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 16px;
+  }
+  
+  .FormGroup .FormInput,
+  .FormGroup .FormSelect {
+    width: 100%;
+  }
+  
+  @media (max-width: 768px) {
+    .FormGroup {
+      flex-direction: column; 
+      align-items: flex-start;
+    }
+  
+    .FormGroup label {
+      width: auto; 
+      margin-bottom: 5px; 
+    }
+  }
+  
+  label {
+  text-align: left;
+  padding-right: 10px;
+  }
+  
+  input,
+  select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  }
+  
+  .ModelPageContainerFooter {
+  display: flex;
+  justify-content: flex-start; 
+  gap: 10px; 
+  }
+  
+  button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  }
+  .ImagePreviewContainer {
+    margin-top: 10px;
+    text-align: left;
+    padding-left:150px;
+  }
+  
+  .ImagePreview {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .actionContent {
+    display: flex;
+   
+  }
+  .ButtonsContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  }
+  
+  .Button {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  }
+  
+  
+  .CancelButton {
+  background-color: #f44336;
+  color: white;
+  }
+  
+  .SubmitButton {
+  background-color: #ffcc00;
+  color: black;
+  }
+  
+  .SubmitButton:disabled {
+  background-color: #e0e0e0;
+  color: #9e9e9e;
+  cursor: not-allowed;
+  }
+  
+  .SmallButton {
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  }
+  
+  .SubmitButton:disabled {
+  background-color: #e0e0e0;
+  color: #9e9e9e;
+  cursor: not-allowed;
+  }
+  
+  .Required {
+  color: red;
+  font-size: 16px;
+  margin-left: 0px;
+  }
+  
+  .editButton {
+  background-color: #f5b810  !important;
+  border-color: #f5b810  !important;
+  color: black;
+  }
+  
+  .editButton:hover {
+  background-color: #f5b810 ;
+  border-color: #f5b810 ;
+  }
+  
+  tbody tr td{
+  align-content: space-evenly;
+  }
+  .ImagePreviewContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  }
+  
+  .ImagePreview {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  }
+  
+  
+  .ButtonContent {
+    display: flex;
+    align-items: center;
+    gap: 0.5em; 
+  }
+  
+  .ButtonText {
+    display: inline-block;
+  }
+  
+
