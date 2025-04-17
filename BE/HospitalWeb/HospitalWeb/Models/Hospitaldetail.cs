@@ -22,4 +22,6 @@ public partial class Hospitaldetail
     public DateTime? CreatedDate { get; set; }
 
     public string? RequestStatus { get; set; }
+
+    public string? Reason { get; set; }
 }

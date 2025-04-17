@@ -39,6 +39,7 @@ namespace HospitalWeb.Controllers
                     Gender = appointmentCreateDto.Gender,
                     Age = appointmentCreateDto.Age,
                     PhoneNumber = appointmentCreateDto.PhoneNumber,
+                    Reason= appointmentCreateDto.Reason,
                     Date = appointmentCreateDto.Date,
                     AvailableTime = appointmentCreateDto.AvailableTime,
                     RequestStatus = "Pending",

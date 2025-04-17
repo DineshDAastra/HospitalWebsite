@@ -185,6 +185,7 @@ const AppointmentTable = () => {
               <th className="appointtable">Appointment No</th>
               <th className="appointtable">Patient Name</th>
               <th className="appointtable">Phone</th>
+              <th className="appointtable">Reason</th>
               <th className="appointtable">Date</th>
               <th className="appointtable">Time</th>
               <th className="appointtable">Age</th>
@@ -207,6 +208,7 @@ const AppointmentTable = () => {
                   <td>{appointment.id}</td>
                   <td>{appointment.patientName}</td>
                   <td>{appointment.phoneNumber}</td>
+                  <td>{appointment.reason}</td>
                   <td>{new Date(appointment.date).toLocaleDateString()}</td>
                   <td>{appointment.availableTime}</td>
                   <td>{appointment.age}</td>

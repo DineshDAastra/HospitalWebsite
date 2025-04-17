@@ -19,7 +19,7 @@ import Joint from "../../../../src/assets/img/09.svg.svg";
 import Sports from "../../../../src/assets/img/10.svg fill.svg";
 import Fracture from "../../../../src/assets/img/11.svg.svg";
 import Spine from "../../../../src/assets/img/13.svg fill.svg";
-import Arthritis from "../../../../src/assets/img/14.svg.svg";
+import Arthritis from "../../../../src/assets/img/14.svg (1).svg";
 import Pediatric from "../../../../src/assets/img/12.svg fill.svg";
 import Evergreen from "../../../../src/assets/img/02.jpg.svg";
 import Hopewell from "../../../../src/assets/img/03.jpg.svg";
@@ -458,10 +458,10 @@ const Home = () => {
                 <Card className="h-100 border-0 shadow-sm">
                   <Card.Body className="p-4">
                     <div className="mb-4">{category.icon}</div>
-                    <h3 className="fw-bold mb-2" style={{ fontSize: "20px" }}>
+                    <h3 className="fw-bold mb-2" style={{ fontSize: "20px" , minHeight: "48px" }}>
                       {category.title}
                     </h3>
-                    <p className="text-muted mb-4" style={{ fontSize: "14px" }}>
+                    <p className="text-muted mb-4" style={{ fontSize: "14px" , lineHeight: "1.5", minHeight: "60px"}}>
                       {category.description}
                     </p>
                     <div className="mt-3">
@@ -712,7 +712,6 @@ const Home = () => {
       <div id="testimonial" style={styles.container}>
         <div className="container text-center">
           <button className="custom-button" onClick={handleOpenModal}>
-            {" "}
             Client Feedback
           </button>
           <h2 className="mb-5 fw-bold">Words from Our Patients</h2>
@@ -868,9 +867,18 @@ const Home = () => {
               General Contact <span className="text-primary">Information</span>
             </h2>
             <div className="row mt-4">
-              <div className="col-md-4 d-flex">
+              {/* <div className="col-md-4 d-flex">
                 <div className="contact-card text-center h-100 w-100">
-                  <img src={Contact} alt="Contact" />
+                  
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.882862861453!2d80.21592077470983!3d13.003044287319105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5263d3ec633b81%3A0x3b304b89419cf7b1!2s79%2C%20Vetri%20Vinayagar%20Koil%20St%2C%20Tiruvalleeswarar%20Nagar%2C%20Anna%20Nagar%20West%2C%20Chennai%2C%20Tamil%20Nadu%20600040!5e0!3m2!1sen!2sin!4v1713348352231!5m2!1sen!2sin"
+                    width="100%"
+                    height="50"
+                    style={{ border: 0, borderRadius: "10px" }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
                   <a
                     href="https://maps.app.goo.gl/qzT9fD24woh5oNWi6"
                     target="_blank"
@@ -878,6 +886,39 @@ const Home = () => {
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <p>
+                      79, Vetri Vinayagar, Koil St, Tiruvalleeswarar Nagar, Anna
+                      Nagar West, Chennai, Tamil Nadu 600040
+                    </p>
+                  </a>
+                </div>
+              </div> */}
+              <div className="col-md-4 d-flex">
+                <div className="contact-card text-center h-100 w-100">
+                  <a
+                    href="https://maps.app.goo.gl/qzT9fD24woh5oNWi6"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-block",
+                      width: "100%",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <iframe
+                      title="Google Map"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.882862861453!2d80.21592077470983!3d13.003044287319105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5263d3ec633b81%3A0x3b304b89419cf7b1!2s79%2C%20Vetri%20Vinayagar%20Koil%20St%2C%20Tiruvalleeswarar%20Nagar%2C%20Anna%20Nagar%20West%2C%20Chennai%2C%20Tamil%20Nadu%20600040!5e0!3m2!1sen!2sin!4v1713348352231!5m2!1sen!2sin"
+                      width="100%"
+                      height="50"
+                      style={{
+                        border: 0,
+                        pointerEvents: "none",
+                        borderRadius: "10px",
+                      }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                    <p className="mt-3" style={{ color: "" }}>
                       79, Vetri Vinayagar, Koil St, Tiruvalleeswarar Nagar, Anna
                       Nagar West, Chennai, Tamil Nadu 600040
                     </p>

@@ -9,27 +9,62 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+  // const [pendingScrollId, setPendingScrollId] = useState(null);
+  const [pendingScrollId, setPendingScrollId] = useState(null);
+const [navigateHomeAfterLogout, setNavigateHomeAfterLogout] = useState(false);
 
   const handleLogoutClick = () => {
-    setShowLogoutPopup(true); // Show confirmation popup
+    setShowLogoutPopup(true); 
   };
 
+  // const handleConfirmLogout = () => {
+  //   setShowLogoutPopup(false);
+  //   navigate("/"); 
+  // };
   const handleConfirmLogout = () => {
     setShowLogoutPopup(false);
-    navigate("/"); // Go to home
+    if (navigateHomeAfterLogout) {
+      setNavigateHomeAfterLogout(false);
+      navigate("/"); // Go home
+    } else if (pendingScrollId) {
+      const idToScroll = pendingScrollId;
+      setPendingScrollId(null);
+      navigate("/", { replace: false });
+      setTimeout(() => {
+        const el = document.getElementById(idToScroll);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    } else {
+      navigate("/"); // Default fallback
+    }
   };
+  
+  
+  // const scrollTo = (id) => {
+  //   navigate("/", { replace: false }); 
+  //   setTimeout(() => {
+  //     const element = document.getElementById(id);
+  //     if (element) {
+  //       element.scrollIntoView({ behavior: "smooth" });
+  //     }
+  //   }, 100); 
+  // };
   const scrollTo = (id) => {
-    navigate("/", { replace: false }); // Go to home
-    setTimeout(() => {
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100); // Small delay to allow page load
+    if (location.pathname === "/approved") {
+      setShowLogoutPopup(true);
+    } else {
+      navigate("/", { replace: false });
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
   };
-
+  
   const handleCancelLogout = () => {
-    setShowLogoutPopup(false); // Just close popup
+    setShowLogoutPopup(false); 
   };
   return (
     <>
@@ -44,7 +79,7 @@ const Header = () => {
 
           <div className="d-flex align-items-center gap-1">
             <FaEnvelope className="icon" />
-            <span>Email: sanjay@jasstratech.com</span>
+            <span>Email: info@aastratech.com</span>
           </div>
 
           <span>|</span>
@@ -194,15 +229,37 @@ const Header = () => {
 
           <Navbar.Collapse id="navbar-nav" className="justify-content-center">
             <Nav className="mx-auto d-flex gap-3">
-              <Nav.Link href="/">Home</Nav.Link>
+              {/* <Nav.Link href="/">Home</Nav.Link> */}
               <Nav.Link
-                href=""
-                onClick={() => {
-                  scrollTo("about");
-                }}
-              >
-                About
-              </Nav.Link>
+  href="/"
+  onClick={(e) => {
+    e.preventDefault();
+    if (location.pathname === "/approved") {
+      setNavigateHomeAfterLogout(true);
+      setShowLogoutPopup(true);
+    } else {
+      navigate("/");
+    }
+  }}
+>
+  Home
+</Nav.Link>
+
+<Nav.Link
+  href=""
+  onClick={(e) => {
+    e.preventDefault();
+    if (location.pathname === "/approved") {
+      setShowLogoutPopup(true);
+      setPendingScrollId("about");
+    } else {
+      scrollTo("about");
+    }
+  }}
+>
+  About
+</Nav.Link>
+
               <Nav.Link
                 href=""
                 onClick={() => {
@@ -219,7 +276,6 @@ const Header = () => {
               >
                 Why Choose Us
               </Nav.Link>
-              {/* <Nav.Link href="#clinics">Clinics</Nav.Link> */}
               <Nav.Link
                 href=""
                 onClick={() => {

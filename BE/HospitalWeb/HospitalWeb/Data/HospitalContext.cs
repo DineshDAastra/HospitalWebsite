@@ -54,6 +54,7 @@ public partial class HospitalContext : DbContext
             entity.Property(e => e.Gender).HasMaxLength(10);
             entity.Property(e => e.PatientName).HasMaxLength(50);
             entity.Property(e => e.PhoneNumber).HasMaxLength(30);
+            entity.Property(e => e.Reason).HasMaxLength(250);
             entity.Property(e => e.RequestStatus).HasMaxLength(20);
         });
 
@@ -76,6 +77,8 @@ public partial class HospitalContext : DbContext
 
         OnModelCreatingPartial(modelBuilder);
     }
+
+
 
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
