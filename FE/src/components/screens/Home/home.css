@@ -559,11 +559,13 @@
     pointer-events: none; 
   }
   .responsive-textarea {
-    resize: vertical; /* allows user to resize vertically */
-    width: 100%;
-    min-height: 100px;
-    font-size: 1rem;
+    border: 1px solid #494949;
+    border-radius: 25px;
+    padding: 10px 15px;
+    font-size: 16px;
+    height: auto;
   }
+  
   
   @media (max-width: 768px) {
     .responsive-textarea {
@@ -634,5 +636,23 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
+  }
+  .contact-card {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .contact-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  @media (max-width: 767.98px) {
+    .contact-card {
+      padding: 1.5rem 1rem;
+    }
+  
+    .custom-button {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+    }
   }
   

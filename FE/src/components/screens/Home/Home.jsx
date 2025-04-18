@@ -12,6 +12,8 @@ import {
   Form,
   Modal,
 } from "react-bootstrap";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 import { FiArrowUpRight } from "react-icons/fi";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -374,7 +376,7 @@ const Home = () => {
             />
           </div>
           <div className="col-md-6 mt-5">
-            <button className="custom-button">About Us</button>
+            <button className="custom-button" style={{ cursor: "default" }}>About Us</button>
             <h2 className="fw-bold">
               Providing Exceptional Orthopedic Care with a Focus on Patients
             </h2>
@@ -435,7 +437,7 @@ const Home = () => {
         <Container>
           <div className="text-center mb-5">
             <div className="mb-4">
-              <button className="custom-button"> Therapeutic Exercises</button>
+              <button className="custom-button" style={{ cursor: "default" }}> Therapeutic Exercises</button>
             </div>
             <h2 className="display-5 fw-bold mb-3" style={{ fontSize: "36px" }}>
               Empowering Recovery Through Targeted
@@ -469,7 +471,8 @@ const Home = () => {
                         variant="outline-primary"
                         size="sm"
                         onClick={() => {
-                          window.open("/filepath/Document.pdf", "_blanck");
+                          window.open( "/filepath/Document.pdf", "_blank");
+
                         }}
                       >
                         <span className="me-2" style={{ color: "#DC3545" }}>
@@ -485,86 +488,13 @@ const Home = () => {
           </Row>
         </Container>
       </div>
-      {/* <Container>
-            <Row className="align-items-center">
-              <Col md={6}>
-                <div className="mb-4">
-                  <button className="custom-button">Our services</button>
-                </div>
-                <h2 className="display-5 fw-bold mb-4">
-                  We provide expert orthopedic care for a pain-free, active
-                  life.
-                </h2>
-                <p className="text-muted">
-                  Our specialized team offers advanced treatments for joint
-                  pain, fractures, spine issues, and sports injuries using the
-                  latest techniques to ensure faster recovery and lasting
-                  relief.
-                </p>
-              </Col>
-              <Col md={6}>
-                <Row className="g-4">
-                  {services.map((service) => (
-                    <Col key={service.id} sm={6} xs={12}>
-                      <Card className="service-card border-0 shadow-sm">
-                        <Card.Body className="p-4">
-                          <div className="icon-box mb-4">{service.icon}</div>
-                          <h3 className="h5 fw-bold mb-3">{service.title}</h3>
-                          <p className="text-muted mb-0">
-                            {service.description}
-                          </p>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </Col>
-            </Row>
-          </Container>
-          <Container>
-            <Row className="g-4 mt-3">
-              <Col md={6}>
-                <Row className="g-4">
-                  {services1.slice(0, 2).map((service1) => (
-                    <Col key={service1.id} md={6}>
-                      <Card className="service-card  border-0 shadow-sm">
-                        <Card.Body className="p-4">
-                          <div className="icon-box mb-3">{service1.icon}</div>
-                          <h3 className="h5 fw-bold">{service1.title}</h3>
-                          <p className="text-muted">{service1.description}</p>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </Col>
-              <Col md={6}>
-                <Row className="g-4">
-                  {services1.slice(2, 4).map((service1) => (
-                    <Col key={service1.id} md={6}>
-                      <Card className="service-card  border-0 shadow-sm">
-                        <Card.Body className="p-4">
-                          <div className="icon-box mb-3">{service1.icon}</div>
-                          <h3 className="h5 fw-bold">{service1.title}</h3>
-                          <p className="text-muted">{service1.description}</p>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </Col>
-            </Row>
-          </Container> */}
-      {/* </section>
-      </div> */}
-
       {/* Section 4 */}
       <div>
         <section className="trust-section" id="whychooseus">
           <Container>
             <Row className="align-items-center">
               <Col md={6} className="text-center text-md-start mb-4 mb-md-0">
-                <button className="custom-button">Why Choose Us</button>
+                <button className="custom-button" style={{ cursor: "default" }}>Why Choose Us</button>
                 <h2 className="fw-bold mt-3">Why Patients Trust Us?</h2>
                 <p className="text-muted">
                   We are committed to delivering exceptional orthopedic care
@@ -653,14 +583,14 @@ const Home = () => {
                       />
                     </Form.Group>
                     <Form.Control
-                      as="textarea"
+                      type="textarea"
                       name="reason"
                       placeholder="Reason for Consultation"
                       value={formData.reason}
                       onChange={handleChange}
                       rows={3}
                       required
-                      className="responsive-textarea"
+                      // className="form-control"
                     />
 
                     <Form.Group>
@@ -859,26 +789,18 @@ const Home = () => {
         </Modal>
       </div>
       {/* Section 8 */}
-      <div>
+      {/* <div>
         <section>
           <div className="container text-center mt-3 mb-3">
-            <button className="custom-button">Contact Information</button>
+            <button className="custom-button"  style={{ cursor: "default" }}>Contact Information</button>
             <h2 className="fw-bold">
               General Contact <span className="text-primary">Information</span>
             </h2>
             <div className="row mt-4">
-              {/* <div className="col-md-4 d-flex">
+              <div className="col-md-4 d-flex">
                 <div className="contact-card text-center h-100 w-100">
-                  
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.882862861453!2d80.21592077470983!3d13.003044287319105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5263d3ec633b81%3A0x3b304b89419cf7b1!2s79%2C%20Vetri%20Vinayagar%20Koil%20St%2C%20Tiruvalleeswarar%20Nagar%2C%20Anna%20Nagar%20West%2C%20Chennai%2C%20Tamil%20Nadu%20600040!5e0!3m2!1sen!2sin!4v1713348352231!5m2!1sen!2sin"
-                    width="100%"
-                    height="50"
-                    style={{ border: 0, borderRadius: "10px" }}
-                    allowFullScreen=""
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  ></iframe>
+                <img src={Contact} alt="Phone" />
+                 
                   <a
                     href="https://maps.app.goo.gl/qzT9fD24woh5oNWi6"
                     target="_blank"
@@ -891,41 +813,8 @@ const Home = () => {
                     </p>
                   </a>
                 </div>
-              </div> */}
-              <div className="col-md-4 d-flex">
-                <div className="contact-card text-center h-100 w-100">
-                  <a
-                    href="https://maps.app.goo.gl/qzT9fD24woh5oNWi6"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "inline-block",
-                      width: "100%",
-                      textDecoration: "none",
-                    }}
-                  >
-                    <iframe
-                      title="Google Map"
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.882862861453!2d80.21592077470983!3d13.003044287319105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5263d3ec633b81%3A0x3b304b89419cf7b1!2s79%2C%20Vetri%20Vinayagar%20Koil%20St%2C%20Tiruvalleeswarar%20Nagar%2C%20Anna%20Nagar%20West%2C%20Chennai%2C%20Tamil%20Nadu%20600040!5e0!3m2!1sen!2sin!4v1713348352231!5m2!1sen!2sin"
-                      width="100%"
-                      height="50"
-                      style={{
-                        border: 0,
-                        pointerEvents: "none",
-                        borderRadius: "10px",
-                      }}
-                      allowFullScreen=""
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    ></iframe>
-                    <p className="mt-3" style={{ color: "" }}>
-                      79, Vetri Vinayagar, Koil St, Tiruvalleeswarar Nagar, Anna
-                      Nagar West, Chennai, Tamil Nadu 600040
-                    </p>
-                  </a>
-                </div>
               </div>
-
+             
               <div className="col-md-4 d-flex">
                 <div className="contact-card text-center h-100 w-100">
                   <img src={Contact1} alt="Phone" />
@@ -942,7 +831,102 @@ const Home = () => {
             </div>
           </div>
         </section>
+      </div> */}
+
+<div>
+  <section className="py-5 bg-light">
+    <div className="container text-center">
+      <button className="custom-button mb-3" style={{ cursor: "default" }}>
+        Contact Information
+      </button>
+      <h2 className="fw-bold mb-4">
+        General Contact <span className="text-primary">Information</span>
+      </h2>
+
+      <div className="row g-4">
+        {/* Address */}
+        <div className="col-md-4">
+          <div className="contact-card p-4 shadow rounded h-100 bg-white">
+          <a
+              href="https://maps.app.goo.gl/qzT9fD24woh5oNWi6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-decoration-none text-dark"
+            >
+            <i className="fas fa-map-marker-alt fa-2x mb-3 text-primary"></i>
+           
+              <p className="mb-0 small">
+                79, Vetri Vinayagar, Koil St, Tiruvalleeswarar Nagar, Anna Nagar West, Chennai, Tamil Nadu 600040
+              </p>
+            </a>
+          </div>
+        </div>
+
+        {/* Phone */}
+        <div className="col-md-4">
+          <div className="contact-card p-4 shadow rounded h-100 bg-white">
+            <i className="fas fa-phone fa-2x mb-3 text-primary"></i>
+            <p className="mb-0 small">+09710495064</p>
+          </div>
+        </div>
+
+        {/* Timing */}
+        <div className="col-md-4">
+          <div className="contact-card p-4 shadow rounded h-100 bg-white">
+            <i className="fas fa-clock fa-2x mb-3 text-primary"></i>
+            <p className="mb-0 small">Mon - Sun: 5 - 9PM</p>
+          </div>
+        </div>
       </div>
+    </div>
+  </section>
+</div>
+
+      {/* <div>
+  <section>
+    <div className="container text-center mt-3 mb-3">
+      <button className="custom-button" style={{ cursor: "default" }}>
+        Contact Information
+      </button>
+      <h2 className="fw-bold">
+        General Contact <span className="text-primary">Information</span>
+      </h2>
+      <div className="row mt-4">
+        <div className="col-md-4 d-flex">
+          <div className="contact-card text-center h-100 w-100">
+            <i className="fas fa-map-marker-alt fa-2x mb-2 text-primary"></i>
+            <a
+              href="https://maps.app.goo.gl/qzT9fD24woh5oNWi6"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <p>
+                79, Vetri Vinayagar, Koil St, Tiruvalleeswarar Nagar, Anna
+                Nagar West, Chennai, Tamil Nadu 600040
+              </p>
+            </a>
+          </div>
+        </div>
+
+        <div className="col-md-4 d-flex">
+          <div className="contact-card text-center h-100 w-100">
+            <i className="fas fa-phone fa-2x mb-2 text-primary"></i>
+            <p>+09710495064</p>
+          </div>
+        </div>
+
+        <div className="col-md-4 d-flex">
+          <div className="contact-card text-center h-100 w-100">
+            <i className="fas fa-clock fa-2x mb-2 text-primary"></i>
+            <p>Mon - Sun: 5 - 9PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div> */}
+
     </>
   );
 };

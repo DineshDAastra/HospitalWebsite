@@ -26,83 +26,121 @@ namespace HospitalWeb.Controllers
             _logger = logger;
 
         }
+       
         [HttpPost("Create")]
         public async Task<IActionResult> CreateAppointment([FromBody] AppointmentCreateDto appointmentCreateDto)
         {
             try
             {
-
-
-                Hospitaldetail Details = new Hospitaldetail
+                HospitalDetail Details = new HospitalDetail
                 {
                     PatientName = appointmentCreateDto.PatientName,
                     Gender = appointmentCreateDto.Gender,
                     Age = appointmentCreateDto.Age,
                     PhoneNumber = appointmentCreateDto.PhoneNumber,
-                    Reason= appointmentCreateDto.Reason,
+                    Reason = appointmentCreateDto.Reason,
                     Date = appointmentCreateDto.Date,
                     AvailableTime = appointmentCreateDto.AvailableTime,
                     RequestStatus = "Pending",
-
                 };
+
                 await _appointmentServices.AddAppointment(Details);
-                string emailSubject = "Contacted From Hospital Web site";
+
+                // Prepare email
+                string emailSubject = "Contacted From Hospital Website";
                 string emailBody = $@"
-                                        <html>
-                                        <body>
-             <p>Dear <strong>Hospital Team</strong>,</p>
+            <html><body>
+            <p>Dear <strong>Hospital Team</strong>,</p>
             <p>A new appointment has been booked through the hospital website.</p>
-            
+
             <h3>Patient Details:</h3>
             <p><strong>Name:</strong> {Details.PatientName}</p>
             <p><strong>Gender:</strong> {Details.Gender}</p>
             <p><strong>Age:</strong> {Details.Age} years</p>
             <p><strong>Phone:</strong> {Details.PhoneNumber}</p>
-            
+
             <h3>Appointment Details:</h3>
             <p><strong>Date:</strong> {Details.Date:MMMM dd, yyyy}</p>
             <p><strong>Time:</strong> {Details.AvailableTime}</p>
-            
-            
+
             <p>Please verify the appointment details and confirm with the patient.</p>
-            
             <p>Best Regards,</p>
             <p><strong>Aastra Technology</strong></p>
-                                        </body>
-                                    </html>";
-                string recipientEmail = _configuration["EmailCommunication:ReciverAddress"];
-                byte[] attachment = null;
-                string attachmentFileName = null;
+            </body></html>";
 
+                string recipientEmail = _configuration["EmailCommunication:ReciverAddress"];
+                string waapiBaseUrl = _configuration["WhatsAppConfig:MessageUrl"];
+                string waapiToken = _configuration["WhatsAppConfig:Token"];
+                string countryCode = _configuration["WhatsAppConfig:CountryCode"];
 
                 Task.Run(async () =>
                 {
                     try
                     {
-                        string emailResult = await _emailServices.SendEmailAsync(recipientEmail, emailSubject, emailBody, attachment, attachmentFileName);
+                        // Send Email
+                        string emailResult = await _emailServices.SendEmailAsync(recipientEmail, emailSubject, emailBody, null, null);
                         if (emailResult != "Email sent successfully.")
                         {
                             _logger.LogWarning("Email sending failed: {emailResult}", emailResult);
                         }
+
+                        var client = new RestClient(new RestClientOptions(waapiBaseUrl));
+
+                        // WhatsApp message to Doctor
+                        string doctorNumber = "9751344979";
+                        string chatIdDoctor = $"{countryCode}{doctorNumber}@c.us";
+                        string doctorMessage = $"🩺 *New Appointment Booked*\n\n" +
+                                               $"👤 *Patient:* {Details.PatientName}\n" +
+                                               $"📞 *Phone:* {Details.PhoneNumber}\n" +
+                                               $"📅 *Date:* {Details.Date:dd-MM-yyyy}\n" +
+                                               $"⏰ *Time:* {Details.AvailableTime}\n" +
+                                               $"📋 *Reason:* {Details.Reason}";
+
+                        var requestToDoctor = new RestRequest();
+                        requestToDoctor.AddHeader("accept", "application/json");
+                        requestToDoctor.AddHeader("authorization", waapiToken);
+                        requestToDoctor.AddJsonBody(new { chatId = chatIdDoctor, message = doctorMessage });
+                        await client.PostAsync(requestToDoctor);
+
+                        // WhatsApp message to Patient
+                        string chatIdPatient = $"{countryCode}{Details.PhoneNumber}@c.us";
+                        string patientMessage = $"🩺 Dear {Details.PatientName},\n\n" +
+                        "Your appointment has been successfully registered with Balaji Ortho Care.\n\n" +
+                        "For any further clarification, please contact the hospital directly.\n" +
+                        $"📅 Date: {Details.Date:dd-MM-yyyy}\n" +
+                        $"⏰ Time: {Details.AvailableTime}\n\n" +
+                        "Please note: You will receive a confirmation message once the hospital verifies your preferred date and time.\n\n" +
+                        "Regards,\nBalaji Ortho Care";
+
+                        var requestToPatient = new RestRequest();
+                        requestToPatient.AddHeader("accept", "application/json");
+                        requestToPatient.AddHeader("authorization", waapiToken);
+                        requestToPatient.AddJsonBody(new { chatId = chatIdPatient, message = patientMessage });
+                        await client.PostAsync(requestToPatient);
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, "Error occurred while sending email.");
+                        _logger.LogError(ex, "Error occurred while sending email or WhatsApp messages.");
                     }
                 });
+
                 return Ok(new
                 {
                     statusCode = 200,
-                    message = "Appointment Created SuccessFully"
+                    message = "Appointment Created Successfully"
                 });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { statuscode = 500, message = "Error while Add Appointment", error = ex.Message });
+                return StatusCode(500, new
+                {
+                    statuscode = 500,
+                    message = "Error while Adding Appointment",
+                    error = ex.Message
+                });
             }
-            //return View(appointment);
         }
-       
+
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllAppointments()
         {
@@ -127,17 +165,19 @@ namespace HospitalWeb.Controllers
             }
         }
 
-    
+
+     
+
         [HttpPost("UpdateRequest")]
         public async Task<IActionResult> UpdateRequest([FromBody] UpdateReqDto request)
         {
             try
             {
-               
                 if (request == null || request.Id <= 0 || string.IsNullOrEmpty(request.RequestStatus))
                 {
                     return BadRequest(new { statuscode = 400, message = "Invalid request data." });
                 }
+
                 var appointment = await _appointmentServices.GetAppointmentById(request.Id);
                 if (appointment == null)
                 {
@@ -149,49 +189,86 @@ namespace HospitalWeb.Controllers
 
                 var formattedDate = appointment.Date?.ToString("dd-MM-yyyy");
 
-                var message = request.RequestStatus == "Approved"
-                    ? $"Dear {appointment.PatientName},\n\n" +
-                    "Your appointment has been Approved. Please make sure to arrive on time.\n\n" +
-                    $"Date: {formattedDate}\n" +
-                    $"Time: {appointment.AvailableTime}.\n\n" +
-                    "Thank you!\n\n" +
-                    "Regards,\n[Balaji Ortho Care]"
-                    : $"Dear {appointment.PatientName},\n\n" +
-                    "Your appointment has been Rejected. Please contact the hospital for further assistance.\n\n" +
-                     "Thank you!\n\n" +
-                    "Regards,\n[Balaji Ortho Care]";
+                // Message to Patient
+                string patientMessage = request.RequestStatus == "Approved"
+                    ? $"🩺 Dear {appointment.PatientName},\n\n" +
+                      "✅ Your appointment has been *Approved*.\n" +
+                      $"📅 Date: {formattedDate}\n" +
+                      $"⏰ Time: {appointment.AvailableTime}\n\n" +
+                      "Please make sure to arrive on time.\n\n" +
+                      "Regards,\n*Balaji Ortho Care*"
+                    : $"🩺 Dear {appointment.PatientName},\n\n" +
+                      "❌ Your appointment has been *Rejected*.\n" +
+                      "Please contact the hospital for further assistance.\n\n" +
+                      "Regards,\n*Balaji Ortho Care*";
+
+                // Message to Doctor
+                string doctorMessage = request.RequestStatus == "Approved"
+                    ? $"📢 *Appointment Approved*\n\n" +
+                      $"👤 Patient: {appointment.PatientName}\n" +
+                      $"📞 Phone: {appointment.PhoneNumber}\n" +
+                      $"📅 Date: {formattedDate}\n" +
+                      $"⏰ Time: {appointment.AvailableTime}\n" +
+                      $"✅ Status: Approved"
+                    : $"📢 *Appointment Rejected*\n\n" +
+                      $"👤 Patient: {appointment.PatientName}\n" +
+                      $"📞 Phone: {appointment.PhoneNumber}\n" +
+                      $"📅 Date: {formattedDate}\n" +
+                      $"⏰ Time: {appointment.AvailableTime}\n" +
+                      $"❌ Status: Rejected";
 
                 var waapiBaseUrl = _configuration["WhatsAppConfig:MessageUrl"];
                 var waapiToken = _configuration["WhatsAppConfig:Token"];
                 var countryCode = _configuration["WhatsAppConfig:CountryCode"];
-                var normalizedPhoneNumber = $"{countryCode}{appointment.PhoneNumber}";
-                var chatId = $"{normalizedPhoneNumber}@c.us";
 
-                var options = new RestClientOptions(waapiBaseUrl);
-                var client = new RestClient(options);
-                var waRequest = new RestRequest();
-                waRequest.AddHeader("accept", "application/json");
-                waRequest.AddHeader("authorization", waapiToken);
-                waRequest.AddJsonBody(new
+                var client = new RestClient(new RestClientOptions(waapiBaseUrl));
+
+                // Send message to Patient
+                var patientChatId = $"{countryCode}{appointment.PhoneNumber}@c.us";
+                var patientRequest = new RestRequest();
+                patientRequest.AddHeader("accept", "application/json");
+                patientRequest.AddHeader("authorization", waapiToken);
+                patientRequest.AddJsonBody(new { chatId = patientChatId, message = patientMessage });
+
+                // Send message to Doctor
+                var doctorNumber = "9751344979";
+                var doctorChatId = $"{countryCode}{doctorNumber}@c.us";
+                var doctorRequest = new RestRequest();
+                doctorRequest.AddHeader("accept", "application/json");
+                doctorRequest.AddHeader("authorization", waapiToken);
+                doctorRequest.AddJsonBody(new { chatId = doctorChatId, message = doctorMessage });
+
+                // Fire both messages in the background
+                Task.Run(async () =>
                 {
-                    chatId = chatId,
-                    message = message
+                    try
+                    {
+                        await client.PostAsync(patientRequest);
+                        await client.PostAsync(doctorRequest);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error sending WhatsApp notifications.");
+                    }
                 });
-                Task.Run(() => client.PostAsync(waRequest));
 
                 return Ok(new
                 {
                     statusCode = 200,
-                    message = "Appointment status updated successfully and WhatsApp notification sent.",
+                    message = "Appointment status updated successfully. Notifications sent to patient and doctor.",
                     data = appointment
                 });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { statusCode = 500, message = "Error while updating appointment", error = ex.Message });
+                return StatusCode(500, new
+                {
+                    statusCode = 500,
+                    message = "Error while updating appointment",
+                    error = ex.Message
+                });
             }
         }
-
 
 
     }

@@ -5,10 +5,10 @@ namespace HospitalWeb.Services.AppointmentServices
     public interface IAppointmentServices
     {
 
-        Task AddAppointment(Hospitaldetail appointmnet);
-        Task<List<Hospitaldetail>> GetAllAppointments();
-        Task<Hospitaldetail> GetAppointmentById(int id);
-        Task UpdateAppointment(Hospitaldetail appointment);
+        Task AddAppointment(HospitalDetail appointmnet);
+        Task<List<HospitalDetail>> GetAllAppointments();
+        Task<HospitalDetail> GetAppointmentById(int id);
+        Task UpdateAppointment(HospitalDetail appointment);
 
     }
 }

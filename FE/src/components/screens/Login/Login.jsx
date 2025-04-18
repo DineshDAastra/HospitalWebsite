@@ -4,10 +4,10 @@ import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import "./login.css";
 import Consultation1 from "../../../../src/assets/img/image 2.svg";
 import { userLogin } from "../../../client/Api/AppoinmentApi";
-
+import { Link } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,6 +15,41 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const payload = {
+  //       userName: email,
+  //       password: password,
+  //     };
+
+  //     const response = await userLogin(payload);
+
+  //     if (response && response.success) {
+  //       localStorage.setItem("loggedin", "true");
+  //       toast.success(response.message, {
+  //         autoClose: 2000,
+  //         position: "top-right",
+  //       });
+
+  //       navigate("/approved");
+  //     } else {
+  //       const errorMessage =
+  //         response?.message || "Login failed. Please try again.";
+  //       toast.error(errorMessage, {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+  //     toast.error("Something went wrong. Please try again later.", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //     });
+  //   }
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -27,20 +62,17 @@ const Login = () => {
       const response = await userLogin(payload);
 
       if (response && response.success) {
-        // toast.success("Login successful!", {
-        //   position: "top-right",
-        //   autoClose: 1000,
-        // });
-        toast.success(response.message, {
+        // Save login flag (and maybe token if needed)
+        localStorage.setItem("loggedin", "true");
+
+        toast.success(response.message || "Login successful", {
           autoClose: 2000,
-          position: 'top-right'
+          position: "top-right",
         });
 
         navigate("/approved");
       } else {
-        const errorMessage =
-          response?.message || "Login failed. Please try again.";
-        toast.error(errorMessage, {
+        toast.error(response?.message || "Login failed. Please try again.", {
           position: "top-right",
           autoClose: 3000,
         });
@@ -86,17 +118,6 @@ const Login = () => {
                   required
                 />
               </Form.Group>
-
-              {/* <Form.Group className="mb-3">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </Form.Group> */}
               <Form.Group className="mb-3 position-relative">
                 <Form.Label>Password</Form.Label>
                 <div style={{ position: "relative" }}>
@@ -106,7 +127,7 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    style={{ paddingRight: "45px" }} 
+                    style={{ paddingRight: "45px" }}
                   />
                   <div
                     onClick={() => setShowPassword(!showPassword)}
@@ -132,6 +153,11 @@ const Login = () => {
                   </div>
                 </div>
               </Form.Group>
+              <div className="text-end mb-3">
+                <Link to="/reset-password" className="forgot-password-link">
+                  Forgot Password?
+                </Link>
+              </div>
               <Button variant="primary" type="submit" className="w-100">
                 Sign In
               </Button>

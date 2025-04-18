@@ -18,7 +18,7 @@ public partial class HospitalContext : DbContext
         _configuration = configuration;
     }
 
-    public virtual DbSet<Hospitaldetail> Hospitaldetails { get; set; }
+    public virtual DbSet<HospitalDetail> HospitalDetails { get; set; }
     public virtual DbSet<Review> Reviews { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -44,18 +44,16 @@ public partial class HospitalContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Hospitaldetail>(entity =>
+        modelBuilder.Entity<HospitalDetail>(entity =>
         {
-            entity.ToTable("hospitaldetails");
-
             entity.Property(e => e.AvailableTime).HasMaxLength(50);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.Date).HasColumnType("datetime");
-            entity.Property(e => e.Gender).HasMaxLength(10);
-            entity.Property(e => e.PatientName).HasMaxLength(50);
-            entity.Property(e => e.PhoneNumber).HasMaxLength(30);
+            entity.Property(e => e.Gender).HasMaxLength(50);
+            entity.Property(e => e.PatientName).HasMaxLength(150);
+            entity.Property(e => e.PhoneNumber).HasMaxLength(15);
             entity.Property(e => e.Reason).HasMaxLength(250);
-            entity.Property(e => e.RequestStatus).HasMaxLength(20);
+            entity.Property(e => e.RequestStatus).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Review>(entity =>
@@ -77,8 +75,6 @@ public partial class HospitalContext : DbContext
 
         OnModelCreatingPartial(modelBuilder);
     }
-
-
 
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

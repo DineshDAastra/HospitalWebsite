@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HospitalWeb.Models;
 
-public partial class Hospitaldetail
+public partial class HospitalDetail
 {
     public int Id { get; set; }
 
@@ -19,9 +19,9 @@ public partial class Hospitaldetail
 
     public string? AvailableTime { get; set; }
 
-    public DateTime? CreatedDate { get; set; }
-
     public string? RequestStatus { get; set; }
 
     public string? Reason { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
 }

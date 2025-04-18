@@ -9,63 +9,37 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
-  // const [pendingScrollId, setPendingScrollId] = useState(null);
   const [pendingScrollId, setPendingScrollId] = useState(null);
-const [navigateHomeAfterLogout, setNavigateHomeAfterLogout] = useState(false);
+  const [navigateHomeAfterLogout, setNavigateHomeAfterLogout] = useState(false);
 
   const handleLogoutClick = () => {
-    setShowLogoutPopup(true); 
+    setShowLogoutPopup(true);
+  };
+  const handleConfirmLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+    setShowLogoutPopup(false);
+    localStorage.clear();
+    navigate("/"); 
+  };
+  
+  const scrollTo = (id) => {
+    navigate("/", { replace: false });
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
   };
 
-  // const handleConfirmLogout = () => {
-  //   setShowLogoutPopup(false);
-  //   navigate("/"); 
-  // };
-  const handleConfirmLogout = () => {
-    setShowLogoutPopup(false);
-    if (navigateHomeAfterLogout) {
-      setNavigateHomeAfterLogout(false);
-      navigate("/"); // Go home
-    } else if (pendingScrollId) {
-      const idToScroll = pendingScrollId;
-      setPendingScrollId(null);
-      navigate("/", { replace: false });
-      setTimeout(() => {
-        const el = document.getElementById(idToScroll);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 300);
-    } else {
-      navigate("/"); // Default fallback
-    }
-  };
-  
-  
-  // const scrollTo = (id) => {
-  //   navigate("/", { replace: false }); 
-  //   setTimeout(() => {
-  //     const element = document.getElementById(id);
-  //     if (element) {
-  //       element.scrollIntoView({ behavior: "smooth" });
-  //     }
-  //   }, 100); 
-  // };
-  const scrollTo = (id) => {
-    if (location.pathname === "/approved") {
-      setShowLogoutPopup(true);
-    } else {
-      navigate("/", { replace: false });
-      setTimeout(() => {
-        const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 100);
-    }
-  };
-  
   const handleCancelLogout = () => {
-    setShowLogoutPopup(false); 
+    setShowLogoutPopup(false);
   };
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
+  
   return (
     <>
       <div className="top-header d-flex justify-content-center justify-content-md-between align-items-center w-100 px-3">
@@ -96,7 +70,7 @@ const [navigateHomeAfterLogout, setNavigateHomeAfterLogout] = useState(false);
           </div>
 
           <span className="ms-auto">
-            {location.pathname === "/approved" ? (
+            {localStorage.getItem("loggedin") === "true" ? (
               <button
                 onClick={handleLogoutClick}
                 style={{
@@ -229,37 +203,15 @@ const [navigateHomeAfterLogout, setNavigateHomeAfterLogout] = useState(false);
 
           <Navbar.Collapse id="navbar-nav" className="justify-content-center">
             <Nav className="mx-auto d-flex gap-3">
-              {/* <Nav.Link href="/">Home</Nav.Link> */}
+              <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link
-  href="/"
-  onClick={(e) => {
-    e.preventDefault();
-    if (location.pathname === "/approved") {
-      setNavigateHomeAfterLogout(true);
-      setShowLogoutPopup(true);
-    } else {
-      navigate("/");
-    }
-  }}
->
-  Home
-</Nav.Link>
-
-<Nav.Link
-  href=""
-  onClick={(e) => {
-    e.preventDefault();
-    if (location.pathname === "/approved") {
-      setShowLogoutPopup(true);
-      setPendingScrollId("about");
-    } else {
-      scrollTo("about");
-    }
-  }}
->
-  About
-</Nav.Link>
-
+                href=""
+                onClick={() => {
+                  scrollTo("about");
+                }}
+              >
+                About
+              </Nav.Link>
               <Nav.Link
                 href=""
                 onClick={() => {

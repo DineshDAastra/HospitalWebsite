@@ -17,6 +17,7 @@ builder.Services.AddScoped<IAppointmentServices, AppointmentServices>();
 builder.Services.AddScoped<IEmailServices, EmailServices>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
 

@@ -63,4 +63,34 @@ const userLogin = async payload => {
     throw error;
   }
 };
-  export { addAppointment,getAllAppointment,updateAppointment,userLogin,getAllReview,addReview};
+const ResetPassword = async payload => {
+  try {
+    const response = await client('Login/reset-password', 'POST', payload);
+
+    return response;
+  } catch (error) {
+    console.error('Error during login:', error);
+    throw error;
+  }
+};
+const VerifyOtp = async payload => {
+  try {
+    const response = await client('Login/verify-otp', 'POST', payload);
+
+    return response;
+  } catch (error) {
+    console.error('Error during login:', error);
+    throw error;
+  }
+};
+const ChangePassword = async payload => {
+  try {
+    const response = await client('Login/change-password', 'POST', payload);
+
+    return response;
+  } catch (error) {
+    console.error('Error during login:', error);
+    throw error;
+  }
+};
+  export { addAppointment,getAllAppointment,updateAppointment,userLogin,getAllReview,addReview,ResetPassword,VerifyOtp,ChangePassword};
