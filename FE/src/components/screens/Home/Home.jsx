@@ -833,7 +833,7 @@ const Home = () => {
         </section>
       </div> */}
 
-<div>
+<div id="contact">
   <section className="py-5 bg-light">
     <div className="container text-center">
       <button className="custom-button mb-3" style={{ cursor: "default" }}>

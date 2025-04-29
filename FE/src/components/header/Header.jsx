@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Navbar, Nav, Button, Container } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Navbar, Nav, Button, Container, Offcanvas } from "react-bootstrap";
 import { FaClock, FaEnvelope, FaPhone, FaBars } from "react-icons/fa";
 import "./header.css";
 import Logo from "../../../src/assets/img/Layer_1.svg";
@@ -11,49 +11,106 @@ const Header = () => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const [pendingScrollId, setPendingScrollId] = useState(null);
   const [navigateHomeAfterLogout, setNavigateHomeAfterLogout] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const handleLogoutClick = () => {
     setShowLogoutPopup(true);
   };
+
   const handleConfirmLogout = () => {
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
     setShowLogoutPopup(false);
     localStorage.clear();
-    navigate("/"); 
+    navigate("/");
   };
-  
-  const scrollTo = (id) => {
-    navigate("/", { replace: false });
-    setTimeout(() => {
-      const element = document.getElementById(id);
+  useEffect(() => {
+    if (pendingScrollId) {
+      const element = document.getElementById(pendingScrollId);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
-    }, 100);
+      setPendingScrollId(null); // Clear after scroll
+    }
+  }, [pendingScrollId]);
+
+  // const scrollTo = (id) => {
+  //   if (showMobileMenu) {
+  //     setShowMobileMenu(false);
+  //   }
+
+  //   navigate("/", { replace: false });
+  //   setTimeout(() => {
+  //     const element = document.getElementById(id);
+  //     if (element) {
+  //       element.scrollIntoView({ behavior: "smooth" });
+  //     }
+  //   }, 100);
+  // };
+  // const scrollTo = (id) => {
+  //   if (showMobileMenu) {
+  //     setShowMobileMenu(false);
+  //   }
+
+  //   if (location.pathname !== "/") {
+  //     setPendingScrollId(id); // Save the target section ID
+  //     navigate("/"); // Navigate to home
+  //   } else {
+  //     setTimeout(() => {
+  //       const element = document.getElementById(id);
+  //       if (element) {
+  //         element.scrollIntoView({ behavior: "smooth" });
+  //       }
+  //     }, 100); // Short delay to allow the DOM to be ready
+  //   }
+  // };
+  const scrollTo = (id) => {
+    const isMobile = window.innerWidth <= 768; // Adjust the breakpoint if needed
+
+    if (location.pathname !== "/") {
+      setPendingScrollId(id);
+      navigate("/");
+    } else {
+      setShowMobileMenu(false);
+
+      const scrollToElement = () => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      };
+
+      if (isMobile) {
+        setTimeout(scrollToElement, 400);
+      } else {
+        scrollToElement();
+      }
+    }
   };
 
   const handleCancelLogout = () => {
     setShowLogoutPopup(false);
   };
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem("isLoggedIn") === "true"
   );
-  
+
   return (
     <>
-      <div className="top-header d-flex justify-content-center justify-content-md-between align-items-center w-100 px-3">
-        <div className="header-info d-none d-md-flex align-items-center gap-3">
+      <div className="top-header d-none d-lg-flex justify-content-center justify-content-md-between align-items-center w-100 px-3">
+        <div className="header-info d-flex align-items-center gap-3">
           <div className="d-flex align-items-center gap-1">
             <FaClock className="icon" />
-            <span>Working Hours: 5 to 9 PM</span>
+            <span>Working Hours: 5:00 PM to 9:00 PM</span>
           </div>
 
           <span>|</span>
 
           <div className="d-flex align-items-center gap-1">
             <FaEnvelope className="icon" />
-            <span>Email: info@aastratech.com</span>
+            <a href="mailto:info@aastratech.com" className="text-white"
+              style={{ textDecoration: "none" }}>Email: info@aastratech.com</a>
           </div>
 
           <span>|</span>
@@ -95,6 +152,7 @@ const Header = () => {
           </span>
         </div>
       </div>
+
       {showLogoutPopup && (
         <div
           style={{
@@ -188,20 +246,45 @@ const Header = () => {
         </div>
       )}
 
-      <Navbar expand="lg" className="main-navbar px-5">
-        <Container
-          fluid
-          className="d-flex align-items-center justify-content-between"
-        >
+      <Navbar expand="lg" className="main-navbar px-3 py-2">
+        <Container fluid className="mobile-header-container">
+          {/* Logo */}
           <Navbar.Brand href="#" className="d-flex align-items-center">
-            <img src={Logo} alt="Healthcare Logo" className="logo" />
+            <img
+              src={Logo || "/placeholder.svg"}
+              alt="Healthcare Logo"
+              className="logo"
+            />
+            {/* <div className="d-none d-lg-block ms-2">
+              <div className="fw-bold">HEALTHCARE</div>
+              <div className="small text-muted">LOGO ICON</div>
+            </div> */}
           </Navbar.Brand>
+          <div className="d-flex d-lg-none align-items-center">
+            {localStorage.getItem("loggedin") === "true" ? (
+              <button onClick={handleLogoutClick} className="mobile-login-btn">
+                Logout
+              </button>
+            ) : (
+              <a href="/login" className="mobile-login-btn">
+                Login
+              </a>
+            )}
 
-          <Navbar.Toggle aria-controls="navbar-nav">
-            <FaBars />
-          </Navbar.Toggle>
+            <button
+              className="mobile-toggle-btn"
+              onClick={() => setShowMobileMenu(true)}
+              aria-controls="navbar-nav"
+              aria-expanded={showMobileMenu}
+            >
+              <FaBars />
+            </button>
+          </div>
 
-          <Navbar.Collapse id="navbar-nav" className="justify-content-center">
+          <Navbar.Collapse
+            id="navbar-nav"
+            className="justify-content-center d-none d-lg-flex"
+          >
             <Nav className="mx-auto d-flex gap-3">
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link
@@ -239,7 +322,7 @@ const Header = () => {
               <Nav.Link
                 href=""
                 onClick={() => {
-                  scrollTo("contact-form");
+                  scrollTo("contact");
                 }}
               >
                 Contact
@@ -250,7 +333,7 @@ const Header = () => {
           {location.pathname !== "/approved" && (
             <Button
               variant="primary"
-              className="book-btn d-none d-md-block"
+              className="book-btn d-none d-lg-block"
               href="#contact-form"
             >
               Book Appointment
@@ -258,6 +341,82 @@ const Header = () => {
           )}
         </Container>
       </Navbar>
+
+      {/* Mobile Menu */}
+
+      <Offcanvas
+        show={showMobileMenu}
+        onHide={() => setShowMobileMenu(false)}
+        placement="end"
+        className="mobile-menu d-lg-none"
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>
+            <img
+              src={Logo || "/placeholder.svg"}
+              alt="Healthcare Logo"
+              className="logo"
+            />
+          </Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <Nav className="flex-column mb-4">
+            <Nav.Link href="/" onClick={() => setShowMobileMenu(false)}>
+              Home
+            </Nav.Link>
+            <Nav.Link href="" onClick={() => scrollTo("about")}>
+              About
+            </Nav.Link>
+            <Nav.Link
+              href=""
+              onClick={() => {
+                scrollTo("service");
+              }}
+            >
+              Services
+            </Nav.Link>
+            <Nav.Link href="" onClick={() => scrollTo("whychooseus")}>
+              Why Choose Us
+            </Nav.Link>
+            <Nav.Link href="" onClick={() => scrollTo("testimonial")}>
+              Testimonials
+            </Nav.Link>
+            <Nav.Link href="" onClick={() => scrollTo("contact")}>
+              Contact
+            </Nav.Link>
+          </Nav>
+
+          <div className="mobile-contact-info">
+            <h6 className="mb-3">Contact Information</h6>
+            <div className="d-flex align-items-center mb-3">
+              <FaClock className="contact-icon me-2" />
+              <span>Working Hours: 5:00 PM to 9:00 PM</span>
+            </div>
+            <div className="d-flex align-items-center mb-3">
+              <FaEnvelope className="contact-icon me-2" />
+              <a href="mailto:info@aastratech.com" className="text-black"
+              style={{ textDecoration: "none" }}>Email: info@aastratech.com</a>
+            </div>
+            <div className="d-flex align-items-center mb-4">
+              <FaPhone className="contact-icon me-2" />
+              <a href="tel:+09710495064" className="mobile-contact-link">
+                Contact: +09710495064
+              </a>
+            </div>
+
+            {location.pathname !== "/approved" && (
+              <Button
+                variant="primary"
+                className="w-100"
+                href="#contact-form"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Book Appointment
+              </Button>
+            )}
+          </div>
+        </Offcanvas.Body>
+      </Offcanvas>
     </>
   );
 };

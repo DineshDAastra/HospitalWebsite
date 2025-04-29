@@ -30,10 +30,16 @@ const Footer = () => {
                   </a>
 
                   <p>
-                    <FaEnvelope className="icon" /> info@aastratech.com
+                    <a href="mailto:info@aastratech.com" className="text-white"
+              style={{ textDecoration: "none" }}>
+                      <FaEnvelope className="icon" /> info@aastratech.com
+                    </a>
                   </p>
                   <p>
-                    <FaPhone className="icon" /> + 09710495064
+                    <a href="tel:+09710495064" className="text-white"
+              style={{ textDecoration: "none" }}>
+                      <FaPhone className="icon" /> + 09710495064
+                    </a>
                   </p>
                 </div>
                 <div className="col-12 col-md-6 footer-column">
@@ -75,7 +81,7 @@ const Footer = () => {
                 </div>
                 <div className="col-12 col-md-6 footer-column">
                   <h3>Working Time</h3>
-                  <p>Mon - Sun: 5 - 9pm</p>
+                  <p>Mon - Sun: 5:00 PM - 9:00 PM</p>
                   {/* <p>Saturday: 10.00am - 6.00pm</p>
                   <p>Sunday Closed</p> */}
                 </div>

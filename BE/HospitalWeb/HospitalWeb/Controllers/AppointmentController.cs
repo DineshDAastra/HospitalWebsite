@@ -84,10 +84,56 @@ namespace HospitalWeb.Controllers
                             _logger.LogWarning("Email sending failed: {emailResult}", emailResult);
                         }
 
+                        //    if (Details == null || string.IsNullOrEmpty(Details.PatientName) || string.IsNullOrEmpty(Details.PhoneNumber))
+                        //    {
+                        //        _logger.LogError("Patient Details are missing. Cannot proceed with WhatsApp messages.");
+                        //        return;
+                        //    }
+
+                        //    var client = new RestClient(new RestClientOptions(waapiBaseUrl));
+
+                        //    // WhatsApp message to Doctor
+                        //    string doctorNumber = "8925981189"; 
+                        //    string chatIdDoctor = $"{countryCode}{doctorNumber}@c.us";
+                        //    string doctorMessage = $"🩺 *New Appointment Booked*\n\n" +
+                        //                           $"👤 *Patient:* {Details.PatientName}\n" +
+                        //                           $"📞 *Phone:* {Details.PhoneNumber}\n" +
+                        //                           $"📅 *Date:* {Details.Date:dd-MM-yyyy}\n" +
+                        //                           $"⏰ *Time:* {Details.AvailableTime}\n" +
+                        //                           $"📋 *Reason:* {Details.Reason}";
+
+                        //    var requestToDoctor = new RestRequest();
+                        //    requestToDoctor.AddHeader("accept", "application/json");
+                        //    requestToDoctor.AddHeader("authorization", waapiToken);
+                        //    requestToDoctor.AddJsonBody(new { chatId = chatIdDoctor, message = doctorMessage });
+                        //    await client.PostAsync(requestToDoctor);
+
+                        //    // WhatsApp message to Patient
+                        //    string chatIdPatient = $"{countryCode}{Details.PhoneNumber}@c.us";
+                        //    string patientMessage = $"🩺 Dear {Details.PatientName},\n\n" +
+                        //    "Your appointment has been successfully registered with Balaji Ortho Care.\n\n" +
+                        //    "For any further clarification, please contact the hospital directly.\n" +
+                        //    $"📅 Date: {Details.Date:dd-MM-yyyy}\n" +
+                        //    $"⏰ Time: {Details.AvailableTime}\n\n" +
+                        //    "Please note: You will receive a confirmation message once the hospital verifies your preferred date and time.\n\n" +
+                        //    "Regards,\nBalaji Ortho Care";
+
+                        //    var requestToPatient = new RestRequest();
+                        //    requestToPatient.AddHeader("accept", "application/json");
+                        //    requestToPatient.AddHeader("authorization", waapiToken);
+                        //    requestToPatient.AddJsonBody(new { chatId = chatIdPatient, message = patientMessage });
+                        //    await client.PostAsync(requestToPatient);
+                        //}
+                        if (Details == null || string.IsNullOrEmpty(Details.PatientName) || string.IsNullOrEmpty(Details.PhoneNumber))
+                        {
+                            _logger.LogError("Patient Details are missing. Cannot proceed with WhatsApp messages.");
+                            return;
+                        }
+
                         var client = new RestClient(new RestClientOptions(waapiBaseUrl));
 
-                        // WhatsApp message to Doctor
-                        string doctorNumber = "9751344979";
+                        // 1. Send WhatsApp message to Doctor
+                        string doctorNumber = "8925981189";
                         string chatIdDoctor = $"{countryCode}{doctorNumber}@c.us";
                         string doctorMessage = $"🩺 *New Appointment Booked*\n\n" +
                                                $"👤 *Patient:* {Details.PatientName}\n" +
@@ -102,15 +148,18 @@ namespace HospitalWeb.Controllers
                         requestToDoctor.AddJsonBody(new { chatId = chatIdDoctor, message = doctorMessage });
                         await client.PostAsync(requestToDoctor);
 
-                        // WhatsApp message to Patient
+                        // Optional delay (not mandatory, just for safer sending)
+                        await Task.Delay(1000);
+
+                        // 2. Send WhatsApp message to Patient
                         string chatIdPatient = $"{countryCode}{Details.PhoneNumber}@c.us";
                         string patientMessage = $"🩺 Dear {Details.PatientName},\n\n" +
-                        "Your appointment has been successfully registered with Balaji Ortho Care.\n\n" +
-                        "For any further clarification, please contact the hospital directly.\n" +
-                        $"📅 Date: {Details.Date:dd-MM-yyyy}\n" +
-                        $"⏰ Time: {Details.AvailableTime}\n\n" +
-                        "Please note: You will receive a confirmation message once the hospital verifies your preferred date and time.\n\n" +
-                        "Regards,\nBalaji Ortho Care";
+                            "Your appointment has been successfully registered with Balaji Ortho Care.\n\n" +
+                            "For any further clarification, please contact the hospital directly.\n" +
+                            $"📅 Date: {Details.Date:dd-MM-yyyy}\n" +
+                            $"⏰ Time: {Details.AvailableTime}\n\n" +
+                            "Please note: You will receive a confirmation message once the hospital verifies your preferred date and time.\n\n" +
+                            "Regards,\nBalaji Ortho Care";
 
                         var requestToPatient = new RestRequest();
                         requestToPatient.AddHeader("accept", "application/json");
@@ -120,7 +169,7 @@ namespace HospitalWeb.Controllers
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, "Error occurred while sending email or WhatsApp messages.");
+                        _logger.LogError(ex, "Error occurred while sending WhatsApp messages.");
                     }
                 });
 
@@ -231,7 +280,7 @@ namespace HospitalWeb.Controllers
                 patientRequest.AddJsonBody(new { chatId = patientChatId, message = patientMessage });
 
                 // Send message to Doctor
-                var doctorNumber = "9751344979";
+                var doctorNumber = "8925981189";
                 var doctorChatId = $"{countryCode}{doctorNumber}@c.us";
                 var doctorRequest = new RestRequest();
                 doctorRequest.AddHeader("accept", "application/json");
